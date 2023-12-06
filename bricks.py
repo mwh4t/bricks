@@ -8,22 +8,28 @@ import random
 user_count = 0
 pc_count = 0
 
-# функция закрытия окна
 def on_close():
+    """
+    Функция для закрытия окна игры
+    """
     response = messagebox.askyesno("Выход", "Вы уверены, что хотите выйти?")
     if response:
         root.destroy()
 
-# функция кнопки "назад"
 def back_btn_func(hide_widgets, show_widgets_coords):
+    """
+    Функция кнопки "назад"
+    """
     for widget in hide_widgets:
         widget.place_forget()
 
     for widget, (x_coord, y_coord) in show_widgets_coords.items():
         widget.place(x=x_coord, y=y_coord)
 
-# функция кнопки "язык"
 # def lang_btn_func():
+#     """
+#     Функция кнопки "язык"
+#     """
 #     if lang_btn.image_num == 1:
 #         lang_btn.configure(image=enlang_btn_image)
 #
@@ -43,9 +49,39 @@ def back_btn_func(hide_widgets, show_widgets_coords):
 #         lang_btn.configure(image=rulang_btn_image)
 #         lang_btn.image_num = 1
 
-# функция кнопки "справка"
-def help_btn_func():
+def profile_btn_func():
+    """
+    Функция кнопки "профиль"
+    """
+    profile_btn.place_forget()
     game_title.place_forget()
+    start_btn.place_forget()
+    help_btn.place_forget()
+    stat_btn.place_forget()
+    main_img_lbl.place_forget()
+
+    # кнопка "назад"
+    back_btn_image = PhotoImage(file="other/images/back.png")
+    back_btn = CircleButton(image=back_btn_image, **BACK_BTN_CONFIG, command=lambda: back_btn_func(
+        [back_btn],
+        {
+            profile_btn: (760, 8),
+            game_title: (270, 16),
+            start_btn: (360, 128),
+            help_btn: (357, 160),
+            stat_btn: (348, 192),
+            main_img_lbl: (460, 365)
+        }
+    )
+                            )
+    back_btn.place(x="8", y="8")
+
+def help_btn_func():
+    """
+    Функция кнопки "справка"
+    """
+    game_title.place_forget()
+    profile_btn.place_forget()
     start_btn.place_forget()
     help_btn.place_forget()
     stat_btn.place_forget()
@@ -57,6 +93,7 @@ def help_btn_func():
         [help_title, help_text, help_scrollbar, back_btn],
         {
             game_title: (270, 16),
+            profile_btn: (760, 8),
             start_btn: (360, 128),
             help_btn: (357, 160),
             stat_btn: (348, 192),
@@ -81,12 +118,20 @@ def help_btn_func():
     help_text.config(state=DISABLED, selectbackground="#0e1620", yscrollcommand=help_scrollbar.set)
     help_text.place(x="40", y="100")
 
-# функция кнопки "статистика"
 def stat_btn_func():
+    """
+    Функция кнопки "статистика"
+    """
     def close_top(toplevel):
+        """
+        Функция закрытия окна статистики
+        """
         toplevel.destroy()
 
     def save_stat():
+        """
+        Функция кнопки "сохранить"
+        """
         with open("stat.txt", "w") as file:
             file.write(f"Вы выиграли {user_count} раз.\n"
                        f"Компьютер выиграл {pc_count} раз.")
@@ -122,11 +167,14 @@ def stat_btn_func():
     # после закрытия top освобождение фокус
     root.grab_release()
 
-# функция кнопки "начать"
 def start_btn_func():
+    """
+    Функция кнопки "начать"
+    """
     global user_count, pc_count
 
     game_title.place_forget()
+    profile_btn.place_forget()
     start_btn.place_forget()
     help_btn.place_forget()
     stat_btn.place_forget()
@@ -136,8 +184,10 @@ def start_btn_func():
 
     user_turn_flag = BooleanVar(value=False)
 
-    # функция кнопки "далее"
     def next_btn_func():
+        """
+        Функция кнопки "далее"
+        """
         nonlocal bricks_num_rand, user_turn_flag
 
         btn_state = user_turn_flag.get()
@@ -171,8 +221,10 @@ def start_btn_func():
             bricks_num1.config(text=f"{bricks_num_rand}")
             bricks_num1.place(x="770", y="8")
 
-    # функция для хода пользователя
     def user_turn_func():
+        """
+        Функция хода пользователя
+        """
         nonlocal bricks_num_rand
 
         if bricks_num_rand > 0:
@@ -185,8 +237,10 @@ def start_btn_func():
         else:
             win_func()
 
-    # функция для хода компьютера
     def pc_turn_func():
+        """
+        Функция хода компьютера
+        """
         nonlocal bricks_num_rand, pc_turn_var
 
         back_btn.place_forget()
@@ -204,8 +258,10 @@ def start_btn_func():
         else:
             win_func()
 
-    # функция кнопки "меню"
     def menu_btn_func():
+        """
+        Функция кнопки "меню"
+        """
         bricks_num1.place_forget()
         menu_btn.place_forget()
         stat_btn.place_forget()
@@ -218,8 +274,10 @@ def start_btn_func():
         stat_btn.place(x="348", y="192")
         main_img_lbl.place(x="460", y="365")
 
-    # функция для победы
     def win_func():
+        """
+        Функция победы компьютера или пользователя
+        """
         nonlocal user_turn_flag
         global user_count, pc_count
 
@@ -257,6 +315,7 @@ def start_btn_func():
         [back_btn, next_btn, bricks_num, user_turn, bricks_enter],
         {
             game_title: (270, 16),
+            profile_btn: (760, 8),
             start_btn: (360, 128),
             help_btn: (357, 160),
             stat_btn: (348, 192),
@@ -290,14 +349,24 @@ def start_btn_func():
     menu_btn = Button(text="Меню", **BTN_CONFIG, command=lambda: menu_btn_func())
     menu_btn.place()
 
-# функция пасхалки
 def easter_egg_func():
+    """
+    Функция пасхалки
+    """
+    game_title.place_forget()
+    profile_btn.place_forget()
+    start_btn.place_forget()
+    help_btn.place_forget()
+    stat_btn.place_forget()
+    main_img_lbl.place_forget()
+
     # кнопка "назад"
     back_btn_image = PhotoImage(file="other/images/back.png")
     back_btn = CircleButton(image=back_btn_image, **BACK_BTN_CONFIG, command=lambda: back_btn_func(
         [back_btn, egg_lbl],
         {
             game_title: (270, 16),
+            profile_btn: (760, 8),
             start_btn: (360, 128),
             help_btn: (357, 160),
             stat_btn: (348, 192),
@@ -306,12 +375,6 @@ def easter_egg_func():
     )
                             )
     back_btn.place(x="8", y="8")
-
-    game_title.place_forget()
-    start_btn.place_forget()
-    help_btn.place_forget()
-    stat_btn.place_forget()
-    main_img_lbl.place_forget()
 
     egg_lbl.place(x="80", y="0")
 
@@ -338,6 +401,11 @@ game_title.place(x="270", y="16")
 # lang_btn = CircleButton(image=rulang_btn_image, **BACK_BTN_CONFIG, command=lambda: lang_btn_func())
 # lang_btn.image_num = 1 # дополнительный атрибут для отслеживания текущего изображения
 # lang_btn.place(x="760", y="8")
+
+# кнопка "профиль"
+profile_btn_image = PhotoImage(file="other/images/profile.png")
+profile_btn = CircleButton(image = profile_btn_image, **BACK_BTN_CONFIG, command=lambda: profile_btn_func())
+profile_btn.place(x="760", y="8")
 
 # кнопка "начать"
 start_btn = Button(text="Начать", **BTN_CONFIG, command=start_btn_func)
