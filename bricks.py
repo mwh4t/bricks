@@ -5,8 +5,10 @@ from other.params import (BACK_BTN_CONFIG, BTN_CONFIG, TITLE_CONFIG, TEXT_CONFIG
                           HELP_TEXT, EASTER_EGG_CONFIG)
 import random
 
+authorization = False
 user_count = 0
 pc_count = 0
+
 
 def on_close():
     """
@@ -15,6 +17,7 @@ def on_close():
     response = messagebox.askyesno("Выход", "Вы уверены, что хотите выйти?")
     if response:
         root.destroy()
+
 
 def back_btn_func(hide_widgets, show_widgets_coords):
     """
@@ -25,6 +28,7 @@ def back_btn_func(hide_widgets, show_widgets_coords):
 
     for widget, (x_coord, y_coord) in show_widgets_coords.items():
         widget.place(x=x_coord, y=y_coord)
+
 
 # def lang_btn_func():
 #     """
@@ -49,6 +53,7 @@ def back_btn_func(hide_widgets, show_widgets_coords):
 #         lang_btn.configure(image=rulang_btn_image)
 #         lang_btn.image_num = 1
 
+
 def profile_btn_func():
     """
     Функция кнопки "профиль"
@@ -60,21 +65,69 @@ def profile_btn_func():
     stat_btn.place_forget()
     main_img_lbl.place_forget()
 
-    # кнопка "назад"
-    back_btn_image = PhotoImage(file="other/images/back.png")
-    back_btn = CircleButton(image=back_btn_image, **BACK_BTN_CONFIG, command=lambda: back_btn_func(
-        [back_btn],
-        {
-            profile_btn: (760, 8),
-            game_title: (270, 16),
-            start_btn: (360, 128),
-            help_btn: (357, 160),
-            stat_btn: (348, 192),
-            main_img_lbl: (460, 365)
-        }
-    )
-                            )
-    back_btn.place(x="8", y="8")
+    if not authorization:
+        # кнопка "назад"
+        back_btn_image = PhotoImage(file="other/images/back.png")
+        back_btn = CircleButton(image=back_btn_image, **BACK_BTN_CONFIG, command=lambda: back_btn_func(
+            [back_btn, reg_lbl, reg_mail_lbl, reg_mail_ent,
+             reg_nick_lbl, reg_nick_ent, reg_pass_lbl, reg_pass_ent,
+             next_btn],
+            {
+                profile_btn: (760, 8),
+                game_title: (270, 16),
+                start_btn: (360, 128),
+                help_btn: (357, 160),
+                stat_btn: (348, 192),
+                main_img_lbl: (460, 365)
+            }
+        )
+                                )
+        back_btn.place(x="8", y="8")
+
+        reg_lbl = Label(text="Регистрация", **TITLE_CONFIG)
+        reg_lbl.place(x="270", y="16")
+
+        reg_mail_lbl = Label(text="Почта", **TEXT_CONFIG)
+        reg_mail_lbl.place(x="270", y="100")
+
+        reg_mail_ent = Entry()
+        reg_mail_ent.place(x="270", y="140")
+
+        reg_nick_lbl = Label(text="Логин", **TEXT_CONFIG)
+        reg_nick_lbl.place(x="270", y="200")
+
+        reg_nick_ent = Entry()
+        reg_nick_ent.place(x="270", y="240")
+
+        reg_pass_lbl = Label(text="Пароль", **TEXT_CONFIG)
+        reg_pass_lbl.place(x="270", y="300")
+
+        reg_pass_ent = Entry()
+        reg_pass_ent.place(x="270", y="340")
+
+        # кнопка "далее"
+        next_btn = Button(text="Далее", **BTN_CONFIG)
+        next_btn.place(x="360", y="558")
+    else:
+        # кнопка "назад"
+        back_btn_image = PhotoImage(file="other/images/back.png")
+        back_btn = CircleButton(image=back_btn_image, **BACK_BTN_CONFIG, command=lambda: back_btn_func(
+            [back_btn, hello_lbl],
+            {
+                profile_btn: (760, 8),
+                game_title: (270, 16),
+                start_btn: (360, 128),
+                help_btn: (357, 160),
+                stat_btn: (348, 192),
+                main_img_lbl: (460, 365)
+            }
+        )
+                                )
+        back_btn.place(x="8", y="8")
+
+        hello_lbl = Label(text="Привет, <Аккаунт>!", **TITLE_CONFIG)
+        hello_lbl.place(x="270", y="16")
+
 
 def help_btn_func():
     """
@@ -117,6 +170,7 @@ def help_btn_func():
 
     help_text.config(state=DISABLED, selectbackground="#0e1620", yscrollcommand=help_scrollbar.set)
     help_text.place(x="40", y="100")
+
 
 def stat_btn_func():
     """
@@ -166,6 +220,7 @@ def stat_btn_func():
 
     # после закрытия top освобождение фокус
     root.grab_release()
+
 
 def start_btn_func():
     """
@@ -349,6 +404,7 @@ def start_btn_func():
     menu_btn = Button(text="Меню", **BTN_CONFIG, command=lambda: menu_btn_func())
     menu_btn.place()
 
+
 def easter_egg_func():
     """
     Функция пасхалки
@@ -378,6 +434,7 @@ def easter_egg_func():
 
     egg_lbl.place(x="80", y="0")
 
+
 # создание основного окна
 root = Tk()
 root.title("Кирпичи")
@@ -404,11 +461,14 @@ game_title.place(x="270", y="16")
 
 # кнопка "профиль"
 profile_btn_image = PhotoImage(file="other/images/profile.png")
-profile_btn = CircleButton(image = profile_btn_image, **BACK_BTN_CONFIG, command=lambda: profile_btn_func())
+profile_btn = CircleButton(image=profile_btn_image, **BACK_BTN_CONFIG, command=lambda: profile_btn_func())
 profile_btn.place(x="760", y="8")
 
 # кнопка "начать"
-start_btn = Button(text="Начать", **BTN_CONFIG, command=start_btn_func)
+if authorization:
+    start_btn = Button(text="Начать", **BTN_CONFIG, command=start_btn_func)
+else:
+    start_btn = Button(text="Начать", **BTN_CONFIG, command=profile_btn_func)
 start_btn.place(x="360", y="128")
 
 # кнопка "справка"
