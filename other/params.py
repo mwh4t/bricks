@@ -18,7 +18,20 @@ BTN_CONFIG = {
     "font": "Helvetica 16",
     "fg": "white",
     "borderless": True,
-    "focusthickness": 0
+    "focusthickness": 0,
+}
+
+# параметры для кнопки "вход"
+LOGIN_BTN = {
+    "width": 35,
+    "height": 15,
+    "bg": "#0e1620",
+    "bd": 5,
+    "activebackground": "#0e1620",
+    "overforeground": "#D8D5E2",
+    "font": "Helvetica 16",
+    "fg": "white",
+    "borderless": True
 }
 
 # параметры для названий
