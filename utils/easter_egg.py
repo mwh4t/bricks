@@ -1,10 +1,10 @@
-from tkinter import *
 from tkmacosx import CircleButton
 from other.params import BACK_BTN_CONFIG
 from utils.back_btn import back_btn_func
 
 
-def easter_egg_func(game_title, profile_btn, start_btn, help_btn, stat_btn, main_img_lbl, egg_lbl):
+def easter_egg_func(game_title, profile_btn, start_btn, help_btn, stat_btn, main_img_lbl,
+                    egg_lbl, back_btn_image):
     """
     Функция пасхалки
     """
@@ -16,7 +16,6 @@ def easter_egg_func(game_title, profile_btn, start_btn, help_btn, stat_btn, main
     main_img_lbl.place_forget()
 
     # кнопка "назад"
-    back_btn_image = PhotoImage(file="other/images/back.png")
     back_btn = CircleButton(image=back_btn_image, **BACK_BTN_CONFIG, command=lambda: back_btn_func(
         [back_btn, egg_lbl],
         {

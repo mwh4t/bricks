@@ -4,9 +4,10 @@ from tkinter import messagebox
 from tkmacosx import Button, CircleButton
 from other.params import TITLE_CONFIG, BACK_BTN_CONFIG, BTN_CONFIG, TEXT_CONFIG
 from utils.back_btn import back_btn_func
+from utils.clear_entries import clear_entries_func
 
 
-def start_btn_func(game_title, profile_btn, start_btn, help_btn, stat_btn, main_img_lbl):
+def start_btn_func(game_title, profile_btn, start_btn, help_btn, stat_btn, main_img_lbl, back_btn_image):
     """
     Функция кнопки "начать"
     """
@@ -42,7 +43,7 @@ def start_btn_func(game_title, profile_btn, start_btn, help_btn, stat_btn, main_
                     user_bricks = int(bricks_enter.get())
                     if 1 <= user_bricks <= 3:
                         bricks_num_rand -= user_bricks
-                        bricks_enter.delete(0, END)
+                        clear_entries_func([bricks_enter])
 
                     else:
                         messagebox.showwarning("Ошибка", "Количество кирпичей должно быть от 1 до 3.")
@@ -148,7 +149,6 @@ def start_btn_func(game_title, profile_btn, start_btn, help_btn, stat_btn, main_
     pc_turn.place()
 
     # кнопка "назад"
-    back_btn_image = PhotoImage(file="other/images/back.png")
     back_btn = CircleButton(image=back_btn_image, **BACK_BTN_CONFIG, command=lambda: back_btn_func(
         [back_btn, next_btn, bricks_num, user_turn, bricks_enter],
         {

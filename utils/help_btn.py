@@ -4,7 +4,7 @@ from other.params import BACK_BTN_CONFIG, TITLE_CONFIG, TEXT_CONFIG, HELP_TEXT
 from utils.back_btn import back_btn_func
 
 
-def help_btn_func(game_title, profile_btn, start_btn, help_btn, stat_btn, main_img_lbl):
+def help_btn_func(game_title, profile_btn, start_btn, help_btn, stat_btn, main_img_lbl, back_btn_image):
     """
     Функция кнопки "справка"
     """
@@ -16,7 +16,6 @@ def help_btn_func(game_title, profile_btn, start_btn, help_btn, stat_btn, main_i
     main_img_lbl.place_forget()
 
     # кнопка "назад"
-    back_btn_image = PhotoImage(file="other/images/back.png")
     back_btn = CircleButton(image=back_btn_image, **BACK_BTN_CONFIG, command=lambda: back_btn_func(
         [help_title, help_text, help_scrollbar, back_btn],
         {

@@ -21,10 +21,20 @@ BTN_CONFIG = {
     "focusthickness": 0,
 }
 
-# параметры для кнопки "вход"
-LOGIN_BTN = {
-    "width": 35,
-    "height": 15,
+# параметры для радиокнопок
+RB_CONFIG = {
+    "bg": "#0e1620",
+    "activebackground": "#0e1620",
+    "font": "Helvetica 16",
+    "activeforeground": "#D8D5E2",
+    "selectcolor": "black",
+    "bd": 0
+}
+
+# параметры для кнопки "регистрация"
+REG_BTN = {
+    "width": 90,
+    "height": 18,
     "bg": "#0e1620",
     "bd": 5,
     "activebackground": "#0e1620",

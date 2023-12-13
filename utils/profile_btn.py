@@ -5,7 +5,8 @@ from other.params import BACK_BTN_CONFIG, TITLE_CONFIG
 from utils.back_btn import back_btn_func
 
 
-def profile_btn_func(profile_btn, game_title, start_btn, help_btn, stat_btn, main_img_lbl, authorization):
+def profile_btn_func(profile_btn, game_title, start_btn, help_btn, stat_btn, main_img_lbl,
+                     authorization, back_btn_image):
     """
     Функция кнопки "профиль"
     """
@@ -17,10 +18,9 @@ def profile_btn_func(profile_btn, game_title, start_btn, help_btn, stat_btn, mai
     main_img_lbl.place_forget()
 
     if not authorization:
-        authorization_func(profile_btn, game_title, start_btn, help_btn, stat_btn, main_img_lbl)
+        authorization_func(profile_btn, game_title, start_btn, help_btn, stat_btn, main_img_lbl, back_btn_image)
     else:
         # кнопка "назад"
-        back_btn_image = PhotoImage(file="other/images/back.png")
         back_btn = CircleButton(image=back_btn_image, **BACK_BTN_CONFIG, command=lambda: back_btn_func(
             [back_btn, hello_lbl],
             {
