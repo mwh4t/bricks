@@ -1,6 +1,7 @@
 from utils.authorization import authorization_func
 from tkinter import *
 from tkmacosx import CircleButton
+from utils.widget_operations import clear_widgets_func
 from other.params import BACK_BTN_CONFIG, TITLE_CONFIG
 from utils.back_btn import back_btn_func
 
@@ -10,12 +11,7 @@ def profile_btn_func(profile_btn, game_title, start_btn, help_btn, stat_btn, mai
     """
     Функция кнопки "профиль"
     """
-    profile_btn.place_forget()
-    game_title.place_forget()
-    start_btn.place_forget()
-    help_btn.place_forget()
-    stat_btn.place_forget()
-    main_img_lbl.place_forget()
+    clear_widgets_func([profile_btn, game_title, start_btn, help_btn, stat_btn, main_img_lbl])
 
     if not authorization:
         authorization_func(profile_btn, game_title, start_btn, help_btn, stat_btn, main_img_lbl, back_btn_image)

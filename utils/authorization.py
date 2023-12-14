@@ -1,11 +1,11 @@
 from tkinter import *
 from tkinter import messagebox
 from tkmacosx import Button, CircleButton, Radiobutton
-# import re
+import re
 import json
 from other.params import BACK_BTN_CONFIG, TITLE_CONFIG, TEXT_CONFIG, REG_BTN, BTN_CONFIG, RB_CONFIG
 from utils.back_btn import back_btn_func
-from utils.clear_entries import clear_entries_func
+from utils.widget_operations import clear_widgets_func, clear_entries_func, clear_rb_func, show_widgets_func
 
 
 def authorization_func(profile_btn, game_title, start_btn, help_btn, stat_btn, main_img_lbl, back_btn_image):
@@ -18,39 +18,66 @@ def authorization_func(profile_btn, game_title, start_btn, help_btn, stat_btn, m
         """
         print()
 
-    def read_accounts_from_file():
-        try:
-            with open('db.json', 'r') as json_file:
-                accounts_data = json.load(json_file)
-            return accounts_data
-        except (FileNotFoundError, json.decoder.JSONDecodeError):
-            return []
-
-    def add_account_to_file(new_account_data):
-        try:
-            accounts_data = read_accounts_from_file()
-            accounts_data.append(new_account_data)
-            with open('db.json', 'w') as json_file:
-                json.dump(accounts_data, json_file, indent=2)
-        except Exception as e:
-            print(f"Error: {e}")
-
     def next_reg_btn_func():
         """
         Функция кнопки "далее" для регистрации
         """
-        if '@' in email_ent.get():
-            registration_data = {
-                "email": email_ent.get(),
-                "username": nick_ent.get(),
-                "password": pass_ent.get(),
-                "gender": gender_var.get()
-            }
-
-            add_account_to_file(registration_data)
-        else:
-            messagebox.showwarning("Ошибка", "Что-то пошло не так :(")
+        # проверка, что введённые данные не пусты
+        if not email_ent.get() or not nick_ent.get() or not pass_ent.get() or gender_var.get() not in ('M', 'F'):
+            messagebox.showwarning("Ошибка", "Заполните все поля регистрации!")
             return
+
+        # проверка длины логина и пароля
+        if len(nick_ent.get()) < 3 or len(pass_ent.get()) < 3:
+            messagebox.showwarning("Ошибка", "Логин и пароль должны быть длиннее трёх символов!")
+            return
+
+        # проверка наличия почты паттерну
+        email_pattern = r"^[a-zA-Z0-9_.]+@[a-zA-Z0-9]+\.[a-zA-Z]+$"
+        if not re.match(email_pattern, email_ent.get()):
+            messagebox.showwarning("Ошибка", "Некорректный адрес электронной почты!")
+            return
+
+        # загрузка существующих аккаунтов из файла
+        with open("db.json", "r") as file:
+            try:
+                accounts = json.load(file)
+            except json.decoder.JSONDecodeError:
+                accounts = {}
+
+        # проверка на уникальность имени пользователя
+        if nick_ent.get() in accounts:
+            messagebox.showwarning("Ошибка", "Это имя пользователя уже занято!")
+            return
+
+        # добавление нового аккаунта
+        registration_data = {
+            "email": email_ent.get(),
+            "username": nick_ent.get(),
+            "password": pass_ent.get(),
+            "gender": gender_var.get()
+        }
+        accounts[nick_ent.get()] = registration_data
+
+        # сохранение обновленных данных в файл
+        with open("db.json", "w") as file:
+            json.dump(accounts, file, indent=4)
+
+        messagebox.showinfo("Успех", "Регистрация успешно завершена!")
+
+        clear_widgets_func([reg_lbl, email_lbl, email_ent, nick_lbl, nick_ent,
+                            pass_lbl, pass_ent, next_reg_btn, male_rb, female_rb])
+
+        show_widgets_func(
+            {
+                profile_btn: (760, 8),
+                game_title: (270, 16),
+                start_btn: (360, 128),
+                help_btn: (357, 160),
+                stat_btn: (348, 192),
+                main_img_lbl: (460, 365)
+            }
+        )
 
     # кнопка "назад"
     back_btn = CircleButton(image=back_btn_image, **BACK_BTN_CONFIG, command=lambda: back_btn_func(
@@ -89,9 +116,9 @@ def authorization_func(profile_btn, game_title, start_btn, help_btn, stat_btn, m
     # ввод пароля
     pass_ent = Entry()
     # радиокнопка мужского пола
-    male_rb = Radiobutton(text="Муж", variable=gender_var, value="М", **RB_CONFIG)
+    male_rb = Radiobutton(text="Муж", variable=gender_var, value="M", **RB_CONFIG)
     # радиокнопка женского пола
-    female_rb = Radiobutton(text="Жен", variable=gender_var, value="Ж", **RB_CONFIG)
+    female_rb = Radiobutton(text="Жен", variable=gender_var, value="F", **RB_CONFIG)
     # кнопка "регистрация"
     reg_btn = Button(text="Регистрация", **REG_BTN, command=lambda: reg_func())
     # кнопки "далее"
@@ -136,14 +163,11 @@ def authorization_func(profile_btn, game_title, start_btn, help_btn, stat_btn, m
                 reg_btn: (270, 370),
                 next_log_btn: (360, 558)
             }
-        ), clear_entries_func([email_ent, nick_ent, pass_ent]))
+        ), clear_entries_func([email_ent, nick_ent, pass_ent]), clear_rb_func([gender_var]))
                                  )
         back_btn1.place(x="8", y="8")
 
-        log_lbl.place_forget()
-        reg_btn.place_forget()
-        next_log_btn.place_forget()
-        clear_entries_func([email_ent, nick_ent, pass_ent])
+        clear_widgets_func([log_lbl, reg_btn, next_log_btn])
 
         reg_lbl.place(x="270", y="16")
         next_reg_btn.place(x="360", y="558")

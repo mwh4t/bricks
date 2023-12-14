@@ -1,4 +1,5 @@
 from tkmacosx import CircleButton
+from utils.widget_operations import clear_widgets_func
 from other.params import BACK_BTN_CONFIG
 from utils.back_btn import back_btn_func
 
@@ -8,12 +9,7 @@ def easter_egg_func(game_title, profile_btn, start_btn, help_btn, stat_btn, main
     """
     Функция пасхалки
     """
-    game_title.place_forget()
-    profile_btn.place_forget()
-    start_btn.place_forget()
-    help_btn.place_forget()
-    stat_btn.place_forget()
-    main_img_lbl.place_forget()
+    clear_widgets_func([game_title, profile_btn, start_btn, help_btn, stat_btn, main_img_lbl])
 
     # кнопка "назад"
     back_btn = CircleButton(image=back_btn_image, **BACK_BTN_CONFIG, command=lambda: back_btn_func(

@@ -2,21 +2,16 @@ import random
 from tkinter import *
 from tkinter import messagebox
 from tkmacosx import Button, CircleButton
+from utils.widget_operations import clear_widgets_func, clear_entries_func
 from other.params import TITLE_CONFIG, BACK_BTN_CONFIG, BTN_CONFIG, TEXT_CONFIG
 from utils.back_btn import back_btn_func
-from utils.clear_entries import clear_entries_func
 
 
 def start_btn_func(game_title, profile_btn, start_btn, help_btn, stat_btn, main_img_lbl, back_btn_image):
     """
     Функция кнопки "начать"
     """
-    game_title.place_forget()
-    profile_btn.place_forget()
-    start_btn.place_forget()
-    help_btn.place_forget()
-    stat_btn.place_forget()
-    main_img_lbl.place_forget()
+    clear_widgets_func([game_title, profile_btn, start_btn, help_btn, stat_btn, main_img_lbl])
 
     bricks_num_rand = random.randint(12, 20)
 
@@ -66,9 +61,7 @@ def start_btn_func(game_title, profile_btn, start_btn, help_btn, stat_btn, main_
         nonlocal bricks_num_rand
 
         if bricks_num_rand > 0:
-            back_btn.place_forget()
-            bricks_num.place_forget()
-            pc_turn.place_forget()
+            clear_widgets_func([back_btn, bricks_num, pc_turn])
 
             user_turn.place(x="320", y="190")
             bricks_enter.place(x="310", y="250")
@@ -81,10 +74,7 @@ def start_btn_func(game_title, profile_btn, start_btn, help_btn, stat_btn, main_
         """
         nonlocal bricks_num_rand, pc_turn_var
 
-        back_btn.place_forget()
-        bricks_num.place_forget()
-        user_turn.place_forget()
-        bricks_enter.place_forget()
+        clear_widgets_func([back_btn, bricks_num, user_turn, bricks_enter])
 
         if bricks_num_rand > 0:
             pc_turn_var = random.randint(1, 3)
@@ -100,11 +90,7 @@ def start_btn_func(game_title, profile_btn, start_btn, help_btn, stat_btn, main_
         """
         Функция кнопки "меню"
         """
-        bricks_num1.place_forget()
-        menu_btn.place_forget()
-        stat_btn.place_forget()
-        pc_win.place_forget()
-        user_win.place_forget()
+        clear_widgets_func([bricks_num1, menu_btn, stat_btn, pc_win, user_win])
 
         game_title.place(x="270", y="16")
         profile_btn.place(x="760", y="8")
@@ -120,10 +106,7 @@ def start_btn_func(game_title, profile_btn, start_btn, help_btn, stat_btn, main_
         nonlocal user_turn_flag
         # global user_count, pc_count
 
-        user_turn.place_forget()
-        bricks_enter.place_forget()
-        pc_turn.place_forget()
-        next_btn.place_forget()
+        clear_widgets_func([user_turn, bricks_enter, pc_turn, next_btn])
 
         menu_btn.place(x="360", y="258")
         stat_btn.place(x="348", y="290")
