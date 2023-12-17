@@ -1,3 +1,4 @@
+import json
 from utils.authorization import authorization_func
 from tkinter import *
 from tkmacosx import CircleButton
@@ -5,15 +6,17 @@ from utils.widget_operations import clear_widgets_func
 from other.params import BACK_BTN_CONFIG, TITLE_CONFIG
 from utils.back_btn import back_btn_func
 
+with open("other/constants.json", 'r') as json_file:
+    loaded_constants = json.load(json_file)
 
-def profile_btn_func(profile_btn, game_title, start_btn, help_btn, stat_btn, main_img_lbl,
-                     authorization, back_btn_image):
+
+def profile_btn_func(profile_btn, game_title, start_btn, help_btn, stat_btn, main_img_lbl, back_btn_image):
     """
     Функция кнопки "профиль"
     """
     clear_widgets_func([profile_btn, game_title, start_btn, help_btn, stat_btn, main_img_lbl])
 
-    if not authorization:
+    if loaded_constants.get("authorization") is False:
         authorization_func(profile_btn, game_title, start_btn, help_btn, stat_btn, main_img_lbl, back_btn_image)
     else:
         # кнопка "назад"

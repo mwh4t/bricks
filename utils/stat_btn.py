@@ -4,7 +4,7 @@ from tkmacosx import Button
 from other.params import TEXT_CONFIG, BTN_CONFIG
 
 
-def stat_btn_func(root, user_count, pc_count):
+def stat_btn_func(root):
     """
     Функция кнопки "статистика"
     """
@@ -19,8 +19,8 @@ def stat_btn_func(root, user_count, pc_count):
         Функция кнопки "сохранить"
         """
         with open("stat.txt", "w") as file:
-            file.write(f"Вы выиграли {user_count} раз.\n"
-                       f"Компьютер выиграл {pc_count} раз.")
+            file.write(f"Вы выиграли 0 раз.\n"
+                       f"Компьютер выиграл 0 раз.")
         messagebox.showinfo("Сохранение...", "Статистика успешно сохранена!")
 
     # global user_count, pc_count
@@ -34,8 +34,8 @@ def stat_btn_func(root, user_count, pc_count):
     # установка top как дочернего окна root
     top.transient(root)
 
-    label = Label(top, text=f"Вы выиграли {user_count} раз.\n"
-                            f"Компьютер выиграл {pc_count} раз.", **TEXT_CONFIG)
+    label = Label(top, text=f"Вы выиграли 0 раз.\n"
+                            f"Компьютер выиграл 0 раз.", **TEXT_CONFIG)
     label.pack(padx=8, pady=8)
 
     ok_btn = Button(top, text="OК", **BTN_CONFIG, command=lambda: close_top(top))
