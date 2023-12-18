@@ -3,17 +3,24 @@ from tkinter import *
 from tkinter import messagebox
 from tkmacosx import Button, CircleButton
 from utils.widget_operations import clear_widgets_func, clear_entries_func
-from other.params import TITLE_CONFIG, BACK_BTN_CONFIG, BTN_CONFIG, TEXT_CONFIG
+from other.params import TITLE_CONFIG, CIRCLE_BTN_CONFIG, BTN_CONFIG, TEXT_CONFIG
 from utils.back_btn import back_btn_func
+from utils.stat_btn import stat_btn_func
+import json
 
 
-def start_btn_func(root, game_title, profile_btn, start_btn, help_btn,
-                   stat_btn, main_img_lbl, back_btn_image):
+def start_btn_func(root, game_title, profile_btn, start_btn,
+                   help_btn, gh_btn, main_img_lbl, back_btn_image):
     """
     Функция кнопки "начать"
     """
+    with open("other/constants.json", 'r') as json_file1:
+        const = json.load(json_file1)
+    with open("db.json", 'r') as json_file:
+        reg_data = json.load(json_file)
+
     clear_widgets_func([game_title, profile_btn, start_btn,
-                        help_btn, stat_btn, main_img_lbl])
+                        help_btn, gh_btn, main_img_lbl])
 
     bricks_num_rand = random.randint(12, 20)
 
@@ -93,33 +100,34 @@ def start_btn_func(root, game_title, profile_btn, start_btn, help_btn,
         """
         Функция кнопки "меню"
         """
-        clear_widgets_func([bricks_num1, menu_btn, stat_btn, pc_win, user_win])
+        clear_widgets_func([bricks_num1, stat_btn, menu_btn, pc_win, user_win])
 
-        game_title.place(x="270", y="16")
-        profile_btn.place(x="760", y="8")
-        start_btn.place(x="360", y="128")
-        help_btn.place(x="357", y="160")
-        stat_btn.place(x="348", y="192")
-        main_img_lbl.place(x="460", y="365")
+        main_menu_func(root)
 
     def win_func():
         """
         Функция победы компьютера или пользователя
         """
         nonlocal user_turn_flag
-        # global user_count, pc_count
 
         clear_widgets_func([user_turn, bricks_enter, pc_turn, next_btn])
 
         menu_btn.place(x="360", y="258")
+
         stat_btn.place(x="348", y="290")
 
         if user_turn_flag.get():
             pc_win.place(x="210", y="200")
-            # pc_count += 1
+            if const.get("current_username") in reg_data:
+                reg_data[const["current_username"]]["pc_wins"] += 1
+                with open("db.json", 'w') as file:
+                    json.dump(reg_data, file, indent=4)
         else:
             user_win.place(x="280", y="200")
-            # user_count += 1
+            if const.get("current_username") in reg_data:
+                reg_data[const["current_username"]]["user_wins"] += 1
+                with open("db.json", 'w') as file:
+                    json.dump(reg_data, file, indent=4)
 
     # текст с ходом игрока
     user_turn = Label(text="Ваш ход:", **TITLE_CONFIG)
@@ -136,7 +144,7 @@ def start_btn_func(root, game_title, profile_btn, start_btn, help_btn,
 
     # кнопка "назад"
     from utils.main_menu import main_menu_func
-    back_btn = CircleButton(image=back_btn_image, **BACK_BTN_CONFIG,
+    back_btn = CircleButton(image=back_btn_image, **CIRCLE_BTN_CONFIG,
                             command=lambda: (back_btn_func(
                                 [back_btn, next_btn, bricks_num, user_turn, bricks_enter]),
                                              main_menu_func(root)))
@@ -154,6 +162,10 @@ def start_btn_func(root, game_title, profile_btn, start_btn, help_btn,
     # число кирпичей в углу
     bricks_num1 = Label(text="", **TEXT_CONFIG)
     bricks_num1.place()
+
+    # кнопка "статистика"
+    stat_btn = Button(text="Статистика", **BTN_CONFIG,
+                      command=lambda: stat_btn_func(root))
 
     # текст с выйгрышем компьютера
     pc_win = Label(text="Компьютер выиграл!", **TITLE_CONFIG)

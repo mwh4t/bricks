@@ -3,31 +3,34 @@ from tkinter import messagebox
 from tkmacosx import Button, CircleButton, Radiobutton
 import re
 import json
-from other.params import (BACK_BTN_CONFIG, TITLE_CONFIG, TEXT_CONFIG,
+from other.params import (CIRCLE_BTN_CONFIG, TITLE_CONFIG, TEXT_CONFIG,
                           REG_BTN, BTN_CONFIG, RB_CONFIG)
 from utils.back_btn import back_btn_func
 from utils.widget_operations import (clear_widgets_func, clear_entries_func,
                                      clear_rb_func)
 
 
-def authorization_func(root, profile_btn, game_title, start_btn, help_btn,
-                       stat_btn, main_img_lbl, back_btn_image):
+def authorization_func(root, profile_btn, game_title, start_btn,
+                       help_btn, gh_btn, main_img_lbl, back_btn_image):
     """
     Функция для авторизации
     """
+    with open("other/constants.json", 'r') as json_file1:
+        const = json.load(json_file1)
+
     clear_widgets_func([profile_btn, game_title, start_btn,
-                        help_btn, stat_btn, main_img_lbl])
+                        help_btn, gh_btn, main_img_lbl])
 
     # кнопка "назад" для входа
     from utils.main_menu import main_menu_func
-    back_btn = CircleButton(image=back_btn_image, **BACK_BTN_CONFIG,
+    back_btn = CircleButton(image=back_btn_image, **CIRCLE_BTN_CONFIG,
                             command=lambda: (back_btn_func(
                                 [back_btn, log_lbl, reg_lbl, email_lbl, email_ent, nick_lbl, nick_ent,
                                  pass_lbl, pass_ent, reg_btn, next_log_btn]), main_menu_func(root)))
     back_btn.place(x="8", y="8")
 
     # кнопка "назад" для регистрации
-    back_btn1 = CircleButton(image=back_btn_image, **BACK_BTN_CONFIG,
+    back_btn1 = CircleButton(image=back_btn_image, **CIRCLE_BTN_CONFIG,
                              command=lambda: (back_btn_func(
                                  [back_btn1, reg_lbl, male_rb, female_rb, next_reg_btn]), clear_entries_func(
                                  [email_ent, nick_ent, pass_ent]), clear_rb_func([gender_var]), login_func()))
@@ -71,7 +74,44 @@ def authorization_func(root, profile_btn, game_title, start_btn, help_btn,
         """
         Функция кнопки "далее" для входа
         """
-        print()
+        # проверка, что введённые данные не пусты
+        if not email_ent.get() or not nick_ent.get() or not pass_ent.get():
+            messagebox.showwarning("Ошибка",
+                                   "Заполните все поля входа!")
+            return
+
+        # загрузка существующих аккаунтов из файла
+        with open("db.json", 'r') as file:
+            try:
+                accounts = json.load(file)
+            except json.decoder.JSONDecodeError:
+                accounts = {}
+
+        # проверка наличия аккаунта с введенным логином
+        username = nick_ent.get()
+        if username not in accounts:
+            messagebox.showwarning("Ошибка",
+                                   "Неверный логин или пароль!")
+            return
+
+        # проверка корректности введенного пароля
+        if accounts[username]["password"] != pass_ent.get():
+            messagebox.showwarning("Ошибка",
+                                   "Неверный логин или пароль!")
+            return
+
+        messagebox.showinfo("Успех",
+                            f"Добро пожаловать, {username}!")
+
+        const["authorization"] = True
+        const["current_username"] = username
+        with open("other/constants.json", 'w') as json_file1:
+            json.dump(const, json_file1, indent=4)
+
+        clear_widgets_func([back_btn, back_btn1, reg_lbl, email_lbl, email_ent, nick_lbl, nick_ent,
+                            pass_lbl, pass_ent, next_log_btn, male_rb, female_rb, reg_btn])
+
+        main_menu_func(root)
 
     def next_reg_btn_func():
         """
@@ -105,35 +145,38 @@ def authorization_func(root, profile_btn, game_title, start_btn, help_btn,
                 accounts = {}
 
         # проверка на уникальность имени пользователя
-        if nick_ent.get() in accounts:
+        username = nick_ent.get()
+        if username in accounts:
             messagebox.showwarning("Ошибка",
                                    "Это имя пользователя уже занято!")
             return
 
         # добавление нового аккаунта
-        registration_data = {
+        reg_data = {
             "email": email_ent.get(),
             "username": nick_ent.get(),
             "password": pass_ent.get(),
-            "gender": gender_var.get()
+            "gender": gender_var.get(),
+            "user_wins": 0,
+            "pc_wins": 0
         }
-        accounts[nick_ent.get()] = registration_data
+        accounts[nick_ent.get()] = reg_data
 
         # сохранение обновленных данных в файл
         with open("db.json", 'w') as file:
             json.dump(accounts, file, indent=4)
 
-        messagebox.showinfo("Успех",
-                            "Регистрация успешно завершена!")
+        const["authorization"] = True
+        const["current_username"] = username
+        with open("other/constants.json", 'w') as json_file1:
+            json.dump(const, json_file1, indent=4)
 
-        data["authorization"] = True
-        with open("other/constants.json", 'w') as json_file:
-            json.dump(data, json_file, indent=4)
+        messagebox.showinfo("Успех",
+                            f"Добро пожаловать, {username}!")
 
         clear_widgets_func([back_btn, back_btn1, reg_lbl, email_lbl, email_ent, nick_lbl, nick_ent,
-                            pass_lbl, pass_ent, next_reg_btn, male_rb, female_rb])
+                            pass_lbl, pass_ent, next_log_btn, next_reg_btn, male_rb, female_rb])
 
-        # from utils.main_menu import main_menu_func
         main_menu_func(root)
 
     def login_func():
@@ -168,6 +211,3 @@ def authorization_func(root, profile_btn, game_title, start_btn, help_btn,
         next_reg_btn.place(x="360", y="558")
         male_rb.place(x="270", y="420")
         female_rb.place(x="370", y="420")
-
-    with open("other/constants.json", 'r') as json_file:
-        data = json.load(json_file)

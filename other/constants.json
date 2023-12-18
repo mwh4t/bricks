@@ -1,5 +1,4 @@
 {
     "authorization": false,
-    "user_count": 0,
-    "pc_count": 0
+    "current_username": ""
 }

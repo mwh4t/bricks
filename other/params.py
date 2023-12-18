@@ -1,15 +1,3 @@
-# параметры для кнопки "назад"
-BACK_BTN_CONFIG = {
-    "width": 32,
-    "bg": "#0e1620",
-    "activebackground": "#0e1620",
-    "borderless": True,
-    "bd": 0,
-    "focusthickness": 0,
-    "highlightthicknes": 0,
-    "overbackground": "#0e1620"
-}
-
 # параметры для кнопок
 BTN_CONFIG = {
     "bg": "#1e2c3a",
@@ -19,6 +7,18 @@ BTN_CONFIG = {
     "fg": "white",
     "borderless": True,
     "focusthickness": 0,
+}
+
+# параметры для круглых кнопок
+CIRCLE_BTN_CONFIG = {
+    "width": 32,
+    "bg": "#0e1620",
+    "activebackground": "#0e1620",
+    "borderless": True,
+    "bd": 0,
+    "focusthickness": 0,
+    "highlightthicknes": 0,
+    "overbackground": "#0e1620"
 }
 
 # параметры для радиокнопок

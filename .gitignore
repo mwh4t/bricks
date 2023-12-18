@@ -180,4 +180,5 @@ fabric.properties
 
 .idea
 .DS_Store
+stat.txt
 db.json
