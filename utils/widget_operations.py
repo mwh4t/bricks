@@ -9,14 +9,6 @@ def clear_widgets_func(widgets):
         widget.place_forget()
 
 
-def show_widgets_func(widgets):
-    """
-    Функция для появления виджетов
-    """
-    for widget, (x_coord, y_coord) in widgets.items():
-        widget.place(x=x_coord, y=y_coord)
-
-
 def clear_entries_func(entries):
     """
     Функция для очистки полей ввода

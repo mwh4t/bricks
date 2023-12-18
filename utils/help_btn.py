@@ -5,25 +5,20 @@ from other.params import BACK_BTN_CONFIG, TITLE_CONFIG, TEXT_CONFIG, HELP_TEXT
 from utils.back_btn import back_btn_func
 
 
-def help_btn_func(game_title, profile_btn, start_btn, help_btn, stat_btn, main_img_lbl, back_btn_image):
+def help_btn_func(root, game_title, profile_btn, start_btn, help_btn,
+                  stat_btn, main_img_lbl, back_btn_image):
     """
     Функция кнопки "справка"
     """
-    clear_widgets_func([game_title, profile_btn, start_btn, help_btn, stat_btn, main_img_lbl])
+    clear_widgets_func([game_title, profile_btn, start_btn,
+                        help_btn, stat_btn, main_img_lbl])
 
     # кнопка "назад"
-    back_btn = CircleButton(image=back_btn_image, **BACK_BTN_CONFIG, command=lambda: back_btn_func(
-        [help_title, help_text, help_scrollbar, back_btn],
-        {
-            game_title: (270, 16),
-            profile_btn: (760, 8),
-            start_btn: (360, 128),
-            help_btn: (357, 160),
-            stat_btn: (348, 192),
-            main_img_lbl: (460, 365)
-        }
-    )
-                            )
+    from utils.main_menu import main_menu_func
+    back_btn = CircleButton(image=back_btn_image, **BACK_BTN_CONFIG,
+                            command=lambda: (back_btn_func(
+                                [help_title, help_text, help_scrollbar, back_btn]),
+                                             main_menu_func(root)))
     back_btn.place(x="8", y="8")
 
     # название страницы "справка"
@@ -38,5 +33,6 @@ def help_btn_func(game_title, profile_btn, start_btn, help_btn, stat_btn, main_i
     help_scrollbar = Scrollbar(command=help_text.yview)
     help_scrollbar.place(x="785", y="0", relheight=1)
 
-    help_text.config(state=DISABLED, selectbackground="#0e1620", yscrollcommand=help_scrollbar.set)
+    help_text.config(state=DISABLED, selectbackground="#0e1620",
+                     yscrollcommand=help_scrollbar.set)
     help_text.place(x="40", y="100")

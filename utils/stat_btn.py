@@ -21,7 +21,8 @@ def stat_btn_func(root):
         with open("stat.txt", "w") as file:
             file.write(f"Вы выиграли 0 раз.\n"
                        f"Компьютер выиграл 0 раз.")
-        messagebox.showinfo("Сохранение...", "Статистика успешно сохранена!")
+        messagebox.showinfo("Сохранение...",
+                            "Статистика успешно сохранена!")
 
     # global user_count, pc_count
 
@@ -38,10 +39,12 @@ def stat_btn_func(root):
                             f"Компьютер выиграл 0 раз.", **TEXT_CONFIG)
     label.pack(padx=8, pady=8)
 
-    ok_btn = Button(top, text="OК", **BTN_CONFIG, command=lambda: close_top(top))
+    ok_btn = Button(top, text="OК", **BTN_CONFIG,
+                    command=lambda: close_top(top))
     ok_btn.pack(side=LEFT, padx=8, pady=8)
 
-    save_btn = Button(top, text="Сохранить", **BTN_CONFIG, command=save_stat)
+    save_btn = Button(top, text="Сохранить", **BTN_CONFIG,
+                      command=save_stat)
     save_btn.pack(side=RIGHT, padx=8, pady=8)
 
     # установка фокуса на top

@@ -7,11 +7,13 @@ from other.params import TITLE_CONFIG, BACK_BTN_CONFIG, BTN_CONFIG, TEXT_CONFIG
 from utils.back_btn import back_btn_func
 
 
-def start_btn_func(game_title, profile_btn, start_btn, help_btn, stat_btn, main_img_lbl, back_btn_image):
+def start_btn_func(root, game_title, profile_btn, start_btn, help_btn,
+                   stat_btn, main_img_lbl, back_btn_image):
     """
     Функция кнопки "начать"
     """
-    clear_widgets_func([game_title, profile_btn, start_btn, help_btn, stat_btn, main_img_lbl])
+    clear_widgets_func([game_title, profile_btn, start_btn,
+                        help_btn, stat_btn, main_img_lbl])
 
     bricks_num_rand = random.randint(12, 20)
 
@@ -41,7 +43,8 @@ def start_btn_func(game_title, profile_btn, start_btn, help_btn, stat_btn, main_
                         clear_entries_func([bricks_enter])
 
                     else:
-                        messagebox.showwarning("Ошибка", "Количество кирпичей должно быть от 1 до 3.")
+                        messagebox.showwarning("Ошибка",
+                                               "Количество кирпичей должно быть от 1 до 3.")
                         return
                     print(f"Ост. от юзера: {bricks_num_rand}")
                 except ValueError:
@@ -132,22 +135,16 @@ def start_btn_func(game_title, profile_btn, start_btn, help_btn, stat_btn, main_
     pc_turn.place()
 
     # кнопка "назад"
-    back_btn = CircleButton(image=back_btn_image, **BACK_BTN_CONFIG, command=lambda: back_btn_func(
-        [back_btn, next_btn, bricks_num, user_turn, bricks_enter],
-        {
-            game_title: (270, 16),
-            profile_btn: (760, 8),
-            start_btn: (360, 128),
-            help_btn: (357, 160),
-            stat_btn: (348, 192),
-            main_img_lbl: (460, 365)
-        }
-    )
-                            )
+    from utils.main_menu import main_menu_func
+    back_btn = CircleButton(image=back_btn_image, **BACK_BTN_CONFIG,
+                            command=lambda: (back_btn_func(
+                                [back_btn, next_btn, bricks_num, user_turn, bricks_enter]),
+                                             main_menu_func(root)))
     back_btn.place(x="8", y="8")
 
     # кнопка "далее"
-    next_btn = Button(text="Далее", **BTN_CONFIG, command=next_btn_func)
+    next_btn = Button(text="Далее", **BTN_CONFIG,
+                      command=next_btn_func)
     next_btn.place(x="360", y="558")
 
     # текст с количеством кирпичей
@@ -167,5 +164,6 @@ def start_btn_func(game_title, profile_btn, start_btn, help_btn, stat_btn, main_
     user_win.place()
 
     # кнопка "меню"
-    menu_btn = Button(text="Меню", **BTN_CONFIG, command=lambda: menu_btn_func())
+    menu_btn = Button(text="Меню", **BTN_CONFIG,
+                      command=lambda: menu_btn_func())
     menu_btn.place()

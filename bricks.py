@@ -1,9 +1,6 @@
 from tkinter import *
-from tkmacosx import Button
-from utils.main_menu import main_menu_func
 from utils.close import close_func
-from utils.stat_btn import stat_btn_func
-from other.params import BTN_CONFIG
+from utils.main_menu import main_menu_func
 
 
 # создание основного окна
@@ -19,11 +16,7 @@ root.configure(bg="#0e1620")
 # обработчик закрытия окна
 root.protocol("WM_DELETE_WINDOW", lambda: close_func(root))
 
-# кнопка "статистика"
-stat_btn = Button(text="Статистика", **BTN_CONFIG, command=lambda: stat_btn_func(root))
-stat_btn.place(x="348", y="192")
-
-main_menu_func(stat_btn)
+main_menu_func(root)
 
 # запуск основного цикла
 root.mainloop()
