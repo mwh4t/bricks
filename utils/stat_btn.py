@@ -9,6 +9,7 @@ def stat_btn_func(root):
     """
     Функция кнопки "статистика"
     """
+    # открытие json-файлов
     with open("other/constants.json", 'r') as json_file1:
         const = json.load(json_file1)
     with open("db.json", 'r') as json_file:
@@ -31,11 +32,9 @@ def stat_btn_func(root):
         messagebox.showinfo("Сохранение...",
                             "Статистика успешно сохранена!")
 
-    # global user_count, pc_count
-
     top = Toplevel(root)
     top.title("Статистика")
-    top.geometry("+600+300")
+    top.geometry("+590+300")
     top.resizable(False, False)
     top.configure(bg="#0e1620")
 
@@ -48,19 +47,19 @@ def stat_btn_func(root):
                       **TEXT_CONFIG)
         label.pack(padx=8, pady=8)
 
+    # кнопка "ОК"
     ok_btn = Button(top, text="OК", **BTN_CONFIG,
                     command=lambda: close_top(top))
     ok_btn.pack(side=LEFT, padx=8, pady=8)
 
+    # кнопка "сохранить"
     save_btn = Button(top, text="Сохранить", **BTN_CONFIG,
                       command=save_stat)
     save_btn.pack(side=RIGHT, padx=8, pady=8)
 
     # установка фокуса на top
     top.grab_set()
-
     # ожидание закрытия top
     root.wait_window(top)
-
-    # после закрытия top освобождение фокус
+    # после закрытия top освобождение фокуса
     root.grab_release()

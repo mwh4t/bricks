@@ -1,29 +1,30 @@
 from tkinter import *
 from tkinter import messagebox
 from tkmacosx import Button, CircleButton, Radiobutton
-import re
-import json
 from other.params import (CIRCLE_BTN_CONFIG, TITLE_CONFIG, TEXT_CONFIG,
                           REG_BTN, BTN_CONFIG, RB_CONFIG)
 from utils.back_btn import back_btn_func
-from utils.widget_operations import (clear_widgets_func, clear_entries_func,
-                                     clear_rb_func)
+from utils.widget_operations import clear_widgets_func, clear_entries_func, clear_rb_func
+import re
+import json
 
 
-def authorization_func(root, profile_btn, game_title, start_btn,
-                       help_btn, gh_btn, main_img_lbl, back_btn_image):
+def authorization_func(root, profile_btn, game_title, start_btn, help_btn, leaderboard_btn,
+                       gh_btn, main_img_btn, back_btn_image, w_back_btn_image):
     """
     Функция для авторизации
     """
+    # открытие json-файла
     with open("other/constants.json", 'r') as json_file1:
         const = json.load(json_file1)
 
-    clear_widgets_func([profile_btn, game_title, start_btn,
-                        help_btn, gh_btn, main_img_lbl])
+    clear_widgets_func([profile_btn, game_title, start_btn, help_btn,
+                        leaderboard_btn, gh_btn, main_img_btn])
 
     # кнопка "назад" для входа
     from utils.main_menu import main_menu_func
     back_btn = CircleButton(image=back_btn_image, **CIRCLE_BTN_CONFIG,
+                            activeimage=w_back_btn_image,
                             command=lambda: (back_btn_func(
                                 [back_btn, log_lbl, reg_lbl, email_lbl, email_ent, nick_lbl, nick_ent,
                                  pass_lbl, pass_ent, reg_btn, next_log_btn]), main_menu_func(root)))
@@ -31,9 +32,11 @@ def authorization_func(root, profile_btn, game_title, start_btn,
 
     # кнопка "назад" для регистрации
     back_btn1 = CircleButton(image=back_btn_image, **CIRCLE_BTN_CONFIG,
+                             activeimage=w_back_btn_image,
                              command=lambda: (back_btn_func(
-                                 [back_btn1, reg_lbl, male_rb, female_rb, next_reg_btn]), clear_entries_func(
-                                 [email_ent, nick_ent, pass_ent]), clear_rb_func([gender_var]), login_func()))
+                                 [back_btn1, reg_lbl, gender_lbl, male_rb, female_rb, next_reg_btn]),
+                                              clear_entries_func([email_ent, nick_ent, pass_ent]),
+                                              clear_rb_func([gender_var]), login_func()))
 
     # переменная для хранения пола
     gender_var = StringVar()
@@ -55,6 +58,8 @@ def authorization_func(root, profile_btn, game_title, start_btn,
     pass_lbl = Label(text="Пароль", **TEXT_CONFIG)
     # ввод пароля
     pass_ent = Entry(show='*')
+    # подпись "ваш пол"
+    gender_lbl = Label(text="Ваш пол", **TEXT_CONFIG)
     # радиокнопка мужского пола
     male_rb = Radiobutton(text="Муж", variable=gender_var,
                           value='M', **RB_CONFIG)
@@ -109,7 +114,7 @@ def authorization_func(root, profile_btn, game_title, start_btn,
             json.dump(const, json_file1, indent=4)
 
         clear_widgets_func([back_btn, back_btn1, reg_lbl, email_lbl, email_ent, nick_lbl, nick_ent,
-                            pass_lbl, pass_ent, next_log_btn, male_rb, female_rb, reg_btn])
+                            pass_lbl, pass_ent, next_log_btn, gender_lbl, male_rb, female_rb, reg_btn])
 
         main_menu_func(root)
 
@@ -162,7 +167,6 @@ def authorization_func(root, profile_btn, game_title, start_btn,
         }
         accounts[nick_ent.get()] = reg_data
 
-        # сохранение обновленных данных в файл
         with open("db.json", 'w') as file:
             json.dump(accounts, file, indent=4)
 
@@ -175,7 +179,7 @@ def authorization_func(root, profile_btn, game_title, start_btn,
                             f"Добро пожаловать, {username}!")
 
         clear_widgets_func([back_btn, back_btn1, reg_lbl, email_lbl, email_ent, nick_lbl, nick_ent,
-                            pass_lbl, pass_ent, next_log_btn, next_reg_btn, male_rb, female_rb])
+                            pass_lbl, pass_ent, next_log_btn, next_reg_btn, gender_lbl, male_rb, female_rb])
 
         main_menu_func(root)
 
@@ -183,18 +187,14 @@ def authorization_func(root, profile_btn, game_title, start_btn,
         """
         Функция для входа
         """
-        email_ent.delete(0, END)
-        nick_ent.delete(0, END)
-        pass_ent.delete(0, END)
-
-        log_lbl.place(x="270", y="16")
-        email_lbl.place(x="270", y="100")
-        email_ent.place(x="270", y="140")
-        nick_lbl.place(x="270", y="200")
-        nick_ent.place(x="270", y="240")
-        pass_lbl.place(x="270", y="300")
-        pass_ent.place(x="270", y="340")
-        reg_btn.place(x="270", y="370")
+        log_lbl.place(x="350", y="16")
+        email_lbl.place(x="370", y="110")
+        email_ent.place(x="305", y="140")
+        nick_lbl.place(x="370", y="210")
+        nick_ent.place(x="305", y="240")
+        pass_lbl.place(x="370", y="310")
+        pass_ent.place(x="305", y="340")
+        reg_btn.place(x="400", y="370")
         next_log_btn.place(x="360", y="558")
 
     login_func()
@@ -207,7 +207,8 @@ def authorization_func(root, profile_btn, game_title, start_btn,
 
         clear_widgets_func([log_lbl, reg_btn, next_log_btn])
 
-        reg_lbl.place(x="270", y="16")
+        reg_lbl.place(x="285", y="16")
         next_reg_btn.place(x="360", y="558")
-        male_rb.place(x="270", y="420")
-        female_rb.place(x="370", y="420")
+        gender_lbl.place(x="370", y="390")
+        male_rb.place(x="310", y="420")
+        female_rb.place(x="430", y="420")

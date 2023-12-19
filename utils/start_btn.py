@@ -9,18 +9,19 @@ from utils.stat_btn import stat_btn_func
 import json
 
 
-def start_btn_func(root, game_title, profile_btn, start_btn,
-                   help_btn, gh_btn, main_img_lbl, back_btn_image):
+def start_btn_func(root, game_title, profile_btn, start_btn, help_btn, leaderboard_btn,
+                   gh_btn, main_img_btn, back_btn_image, w_back_btn_image):
     """
     Функция кнопки "начать"
     """
+    # открытие json-файлов
     with open("other/constants.json", 'r') as json_file1:
         const = json.load(json_file1)
     with open("db.json", 'r') as json_file:
         reg_data = json.load(json_file)
 
-    clear_widgets_func([game_title, profile_btn, start_btn,
-                        help_btn, gh_btn, main_img_lbl])
+    clear_widgets_func([game_title, profile_btn, start_btn, help_btn,
+                        leaderboard_btn, gh_btn, main_img_btn])
 
     bricks_num_rand = random.randint(12, 20)
 
@@ -145,6 +146,7 @@ def start_btn_func(root, game_title, profile_btn, start_btn,
     # кнопка "назад"
     from utils.main_menu import main_menu_func
     back_btn = CircleButton(image=back_btn_image, **CIRCLE_BTN_CONFIG,
+                            activeimage=w_back_btn_image,
                             command=lambda: (back_btn_func(
                                 [back_btn, next_btn, bricks_num, user_turn, bricks_enter]),
                                              main_menu_func(root)))
@@ -157,7 +159,7 @@ def start_btn_func(root, game_title, profile_btn, start_btn,
 
     # текст с количеством кирпичей
     bricks_num = Label(text=f"Количество кирпичей:\n{bricks_num_rand}", **TITLE_CONFIG)
-    bricks_num.place(x="200", y="16")
+    bricks_num.place(x="200", y="220")
 
     # число кирпичей в углу
     bricks_num1 = Label(text="", **TEXT_CONFIG)

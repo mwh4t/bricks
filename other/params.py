@@ -27,7 +27,6 @@ RB_CONFIG = {
     "activebackground": "#0e1620",
     "font": "Helvetica 16",
     "activeforeground": "#D8D5E2",
-    "selectcolor": "black",
     "bd": 0
 }
 
@@ -44,7 +43,7 @@ REG_BTN = {
     "borderless": True
 }
 
-# параметры для названий
+# параметры для заголовков
 TITLE_CONFIG = {
     "font": "Helvetica 36 bold",
     "fg": "white",
@@ -79,6 +78,7 @@ HELP_TEXT = {
             '• Уведомление об окончании игры и показ победителя.'
 }
 
+# параметры для пасхалки
 EASTER_EGG_CONFIG = {
     "width": 350,
     "height": 250,

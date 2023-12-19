@@ -16,6 +16,7 @@ root.configure(bg="#0e1620")
 # обработчик закрытия окна
 root.protocol("WM_DELETE_WINDOW", lambda: close_func(root))
 
+# вызов функции главного меню
 main_menu_func(root)
 
 # запуск основного цикла
