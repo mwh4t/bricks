@@ -1,2 +1,6 @@
+altgraph==0.17.4
 colour==0.1.5
+macholib==1.16.3
+modulegraph==0.19.6
+py2app==0.28.6
 tkmacosx==1.0.5

@@ -16,11 +16,9 @@ def profile_btn_func(root, settings_image, w_settings_image, profile_btn, game_t
     """
     Функция кнопки "профиль"
     """
-    # открытие json-файлов
+    # открытие json-файла
     with open("other/constants.json", 'r') as json_file1:
         const = json.load(json_file1)
-    with open("db.json", 'r') as json_file:
-        reg_data = json.load(json_file)
 
     def logout_btn_func():
         """
@@ -51,6 +49,10 @@ def profile_btn_func(root, settings_image, w_settings_image, profile_btn, game_t
                                     [back_btn, profile_lbl, email_lbl, change_email_btn, username_lbl, change_un_btn,
                                      password_lbl, change_pw_btn, stat_btn, logout_btn]), main_menu_func(root)))
         back_btn.place(x="8", y="8")
+
+        # открытие json-файла
+        with open("db.json", 'r') as json_file:
+            reg_data = json.load(json_file)
 
         # заголовок "профиль"
         profile_lbl = Label(text="Профиль", **TITLE_CONFIG)
